@@ -1,10 +1,35 @@
 <script>
-	export let name;
+	let sitename = "junior job";
+	const handleClick = () => {
+		sitename = 'an updated site name';
+	}
+
+	let apiData;
+
+	const fetchData = async () => {
+	try {
+		const r = await fetch('http://localhost:8080/api/login');
+		if (r.ok) {
+		apiData = await r.json();
+		} else {
+		console.error('Error getting api data', r.statusText);
+		}
+	} catch (e) {
+		console.error('Error gettinng api data:', e.message);
+	}
+	};
 </script>
 
 <main>
-	<h1>Welcome to {name}</h1>
+	<h1>Welcome to {sitename}</h1>
 	<p>Welcome to the very first version of my Svelte frontend site</p>
+	<button on:click={handleClick}>Update site name</button>
+
+	<button on:click={fetchData}>Fetch Data</button>
+  
+	{#if apiData}
+	  <pre>{JSON.stringify(apiData, null, 2)}</pre>
+	{/if}
 </main>
 
 <style>
